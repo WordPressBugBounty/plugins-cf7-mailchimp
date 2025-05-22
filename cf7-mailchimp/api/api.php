@@ -298,8 +298,7 @@ if(is_array($fields) && count($fields)>0){
     $type=$crm_fields[$k]['type']; 
 $val=$v['value'];
 
-if($type == 'birthday'){ $temp_val=strtotime($val); if(!empty($temp_val)){ $val=date('m/d',$temp_val); } }
-else if($type == 'gdpr'){
+ if($type == 'gdpr'){
  $post['marketing_permissions'][]=array('marketing_permission_id'=>$k,'enabled'=>!empty($v) ? true : false);   
 }elseif($type == 'address'){
 if(strpos($k,'-') !== false){
@@ -325,7 +324,8 @@ if(!empty($val)){
  } }
 }
 }else{
-$merge_fields[$k]=$val;      
+if($type == 'birthday'){ $temp_val=strtotime($val); if(!empty($temp_val)){ $val=date('m/d',$temp_val); } }
+    $merge_fields[$k]=$val;      
 }   }
 }
 if(!empty($merge_fields)){
@@ -345,7 +345,7 @@ if(!empty($meta['assign_group']) && !empty($meta['groups'])){
 }
 
 } } 
-///var_dump($post,$meta['groups']); die();
+//var_dump($post,$meta['groups']); die();
 $link=""; $error="";
 if(!empty($method) && !empty($object_url) ){
 $arr= $this->post_crm($object_url, $method,$post);
@@ -461,16 +461,12 @@ if(!empty($arr['error']) ){
 return $error;    
 }
 
-public function post_crm($path,$method,$body=''){
-       
+public function post_crm($path,$method,$body=''){   
       $url=$this->url.$path;   
     if(is_array($body)&& count($body)>0)
    { 
-       $body=json_encode($body);
+       $body=json_encode($body); 
    }
-       
-
-
      $head=array('Authorization'=> ' apikey ' .$this->api_key); 
        if($method == 'post'){
        $head['Content-Type']='application/json';   

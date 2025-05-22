@@ -2,7 +2,7 @@
 /**
 * Plugin Name: WP Contact Form Mailchimp
 * Description: Integrates Contact Form 7, <a href="https://wordpress.org/plugins/contact-form-entries/">Contact Form Entries Plugin</a> and many other forms with Mailchimp allowing form submissions to be automatically sent to your Mailchimp account 
-* Version: 1.1.8
+* Version: 1.1.9
 * Author URI: https://www.crmperks.com
 * Plugin URI: https://www.crmperks.com/plugins/contact-form-plugins/contact-form-mailchimp-plugin/
 * Author: CRM Perks.
@@ -24,7 +24,7 @@ class vxcf_mailchimp {
   public  $crm_name = "mailchimp";
   public  $id = "vxcf_mailchimp";
   public  $domain = "vxcf-mailchimp";
-  public  $version = "1.1.8";
+  public  $version = "1.1.9";
   public  $update_id = "6000001";
   public  $min_cf_version = "1.0";
   public $type = "vxcf_mailchimp";
@@ -966,7 +966,7 @@ return $result;
       $value=$value['value'];   
      }
      if(!is_array($value)){
-          $value=maybe_unserialize($value);
+         // $value=maybe_unserialize($value);
      }
   
   }
