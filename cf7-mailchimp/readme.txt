@@ -3,8 +3,8 @@ Contributors: crmperks, sbazzi, asif876
 Tags: contact form 7, contact form 7 mailchimp, elementor form mailchimp, mailchimp, ninja forms mailchimp
 Requires at least: 3.8
 Tested up to: 6.8
-Stable tag: 1.1.9
-Version: 1.1.9
+Stable tag: 1.2.0
+Version: 1.2.0
 Requires PHP: 5.3
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
@@ -192,6 +192,9 @@ Mailchimp is a popular newletter service. You can create newsletter singup forms
 
 
 == Changelog ==
+
+= 1.2.0 =
+* fixed "recreate missing db tables and permissions" issue.
 
 = 1.1.9 =
 * fixed "birthday field" issue.

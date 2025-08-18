@@ -2,7 +2,7 @@
 /**
 * Plugin Name: WP Contact Form Mailchimp
 * Description: Integrates Contact Form 7, <a href="https://wordpress.org/plugins/contact-form-entries/">Contact Form Entries Plugin</a> and many other forms with Mailchimp allowing form submissions to be automatically sent to your Mailchimp account 
-* Version: 1.1.9
+* Version: 1.2.0
 * Author URI: https://www.crmperks.com
 * Plugin URI: https://www.crmperks.com/plugins/contact-form-plugins/contact-form-mailchimp-plugin/
 * Author: CRM Perks.
@@ -24,7 +24,7 @@ class vxcf_mailchimp {
   public  $crm_name = "mailchimp";
   public  $id = "vxcf_mailchimp";
   public  $domain = "vxcf-mailchimp";
-  public  $version = "1.1.9";
+  public  $version = "1.2.0";
   public  $update_id = "6000001";
   public  $min_cf_version = "1.0";
   public $type = "vxcf_mailchimp";
@@ -118,9 +118,21 @@ require_once(self::$path . "includes/plugin-pages.php");
   add_action('init', array($this,'init'));
        //loading translations
 load_plugin_textdomain('contact-form-mailchimp-crm', FALSE,  $this->plugin_dir_name(). '/languages/' );
+$this->maybe_install(true);
+}
   
+  }
+public function maybe_install($version_check=false){
+    
+  if(current_user_can( 'manage_options' )){
   self::$db_version=get_option($this->type."_version");
-  if(self::$db_version != $this->version && current_user_can( 'manage_options' )){
+     $do_install=false;
+      if($version_check == false){
+        $do_install=true;  
+      }else if(self::$db_version != $this->version){
+        $do_install=true;   
+      }
+  if($do_install){
   $data=$this->get_data_object();
   $data->update_table();
   update_option($this->type."_version", $this->version);
@@ -128,11 +140,9 @@ load_plugin_textdomain('contact-form-mailchimp-crm', FALSE,  $this->plugin_dir_n
   require_once(self::$path . "includes/install.php"); 
   $install=new vxcf_mailchimp_install();
   $install->create_roles();   
-
   }
-}
-  
-  }
+  } 
+}  
    public function form_submitted($form){ 
 
     //entries plugin exists , do not use this hook
@@ -506,28 +516,6 @@ $this->push($entry,$form,'',false);
   echo '</p></div>';
   } 
 
-
-  /**
-  * create tables and roles
-  * 
-  */
-  public function install(){
-      
-  if(current_user_can( 'manage_options' )){
-  self::$db_version=get_option($this->type."_version");
-  if(self::$db_version != $this->version){
-  $data=$this->get_data_object();
-  $data->update_table();
-  update_option($this->type."_version", $this->version);
-  //add post permissions
-  require_once(self::$path . "includes/install.php"); 
-  $install=new vxcf_mailchimp_install();
-  $install->create_roles();   
-
-  }
-
-  } 
-  }
 /**
 * Contact Form status
 * 
@@ -1286,6 +1274,7 @@ if(!current_user_can($this->id."_send_to_crm")){return; }
   */
   public function activate(){ 
 $this->plugin_api(true);
+$this->maybe_install();
 do_action('plugin_status_'.$this->type,'activate');  
   }
     /**
