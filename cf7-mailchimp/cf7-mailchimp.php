@@ -2,7 +2,7 @@
 /**
 * Plugin Name: WP Contact Form Mailchimp
 * Description: Integrates Contact Form 7, <a href="https://wordpress.org/plugins/contact-form-entries/">Contact Form Entries Plugin</a> and many other forms with Mailchimp allowing form submissions to be automatically sent to your Mailchimp account 
-* Version: 1.2.0
+* Version: 1.2.2
 * Author URI: https://www.crmperks.com
 * Plugin URI: https://www.crmperks.com/plugins/contact-form-plugins/contact-form-mailchimp-plugin/
 * Author: CRM Perks.
@@ -24,7 +24,7 @@ class vxcf_mailchimp {
   public  $crm_name = "mailchimp";
   public  $id = "vxcf_mailchimp";
   public  $domain = "vxcf-mailchimp";
-  public  $version = "1.2.0";
+  public  $version = "1.2.2";
   public  $update_id = "6000001";
   public  $min_cf_version = "1.0";
   public $type = "vxcf_mailchimp";
@@ -209,18 +209,17 @@ if(is_array($post_data)){
   $val=$uploaded_files[$name];
    }
 
-   if( !empty($val) && isset($v['basetype']) && $v['basetype'] == 'mfile' && function_exists('dnd_get_upload_dir') ){
+  if( !empty($val) && isset($v['basetype']) && $v['basetype'] == 'mfile' && function_exists('dnd_get_upload_dir') ){
       $dir=dnd_get_upload_dir(); 
      $f_arr=array();
       foreach($val as $file){
-     $file_name=explode('/',$file);
+     $file_name=explode('/',$file); 
      if(count($file_name)>1){
-      $f_arr[]=$dir['upload_url'].'/'.$file_name[1];    
+      $f_arr[]=$dir['upload_url'].'/'.end($file_name);    
      }
-      }
-        
+      }   
    $val=$f_arr;   
-   }  
+   }   
     if(!isset($uploaded_files[$name])){
      $val=wp_unslash($val);   
     }        
@@ -1921,9 +1920,9 @@ $this->send_error_email($info,$entry,$form);
   //insert log
   $arr=array("object"=>$feed["object"],"form_id"=>$form['id'],"status"=>$status,"entry_id"=>$entry_id,"crm_id"=>$id,"meta"=>$error,"time"=>date('Y-m-d H:i:s'),"data"=>$temp,"response"=>$this->post('response',$res),"extra"=>$this->post('extra',$res),"feed_id"=>$this->post('id',$feed),'parent_id'=>$parent_id,'event'=>$event,"link"=>$this->post('link',$res));
   $settings=get_option($this->type.'_settings',array());
-//  if($this->post('disable_log',$settings) !="yes"){ 
+  if($this->post('disable_log',$settings) !="yes"){ 
    $insert_id=$data_db->insert_log($arr,$log_id); 
-//  } 
+  } 
   $log_link='';
     if(!empty($insert_id)){ //   
    $log_url=admin_url( 'admin.php?page='.$this->id.'&tab=logs&log_id='.$insert_id);  

@@ -65,7 +65,13 @@
 <label for="vx_plugin_data"><input type="checkbox" name="meta[plugin_data]" value="yes" <?php if($this->post('plugin_data',$meta) == "yes"){echo 'checked="checked"';} ?> id="vx_plugin_data"><?php esc_html_e('On deleting this plugin remove all of its data','contact-form-mailchimp-crm'); ?></label>
   </td>
   </tr>
-  
+       <tr>
+  <th scope="row"><label for="vx_plugin_logs"><?php esc_html_e('Mailchimp Logs', 'cf7-mailchimp'); ?></label>
+  </th>
+  <td>
+<label for="vx_plugin_logs"><input type="checkbox" name="meta[disable_log]" value="yes" <?php if($this->post('disable_log',$meta) == "yes"){echo 'checked="checked"';} ?> id="vx_plugin_logs"><?php esc_html_e('Disable Storing Mailchimp Logs','cf7-mailchimp'); ?></label>
+  </td>
+  </tr> 
 
   <?php
   if(class_exists('vxcf_form')){
